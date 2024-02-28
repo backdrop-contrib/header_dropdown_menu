@@ -2,7 +2,7 @@
 
 This simple module enables site administrators to select "dropdown" menu style for the header block menu.
 
-The dropdown menu lis style approximately like the Basis theme's Header block menu, but with added dropdown functionality. If you are using a different theme, you will most likely need to override the css rules found in `header_dropdown_menu.css` for best results.
+The dropdown menu is styled approximately like the Basis theme's Header block menu, but with added dropdown functionality. If you are using a different theme, you will most likely need to override the css rules found in `header_dropdown_menu.css` for best results.
 
 ## Installation
 
