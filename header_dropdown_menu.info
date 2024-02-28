@@ -1,0 +1,5 @@
+name = Header Block Dropdown Menu
+description = Allows administrators to choose a dropdown menu style for the header block menu.
+type = module
+backdrop = 1.x
+package = Administration

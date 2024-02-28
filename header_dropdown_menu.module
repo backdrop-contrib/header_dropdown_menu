@@ -1,0 +1,74 @@
+<?php
+/**
+ * @file
+ *  Allows administrators to choose a dropdown menu style for header menu.
+ */
+
+/**
+ * Implements hook_block_view_MODULE_DELTA_alter(),
+ */
+function header_dropdown_menu_block_view_system_header_alter(&$data, $block) {
+  $settings = $block->settings['block_settings'];
+  if (isset($settings['style']) && $settings['style'] == 'dropdown') {
+    $menu = $settings['menu'];
+    module_load_include('inc', 'system', 'system.menu');
+    $settings += system_menu_block_defaults($menu);
+    $build = system_menu_block_build($settings);
+    backdrop_add_css(backdrop_get_path('module', 'header_dropdown_menu') . '/css/header-dropdown-menu.css');
+    $menu_output = backdrop_render($build['content']);
+    // Set the rest of the variables needed by header.tpl.php.
+    $variables['menu'] = '<div class="header-dropdown-menu">' . $menu_output . '</div>';
+    $site_config = config('system.core');
+    $variables['logo'] = $settings['logo'] ? backdrop_get_logo() : NULL;
+    $variables['logo_attributes'] = $settings['logo'] ? array_diff_key(backdrop_get_logo_info(), array('path' => '')) : array();
+    $variables['site_name'] = $settings['site_name'] ? check_plain($site_config->getTranslated('site_name')) : '';
+    $variables['site_slogan'] = $settings['site_slogan'] ? filter_xss_admin($site_config->getTranslated('site_slogan')) : '';
+    // Rebuild the header markup.
+    $data['content']['#markup'] = theme('header', $variables);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function header_dropdown_menu_form_layout_block_configure_form_alter(&$form, &$form_state) {
+  if ($form_state['block']->delta == 'header') {
+    $config = $form_state['block']->settings['block_settings'];
+    $form['block_settings']['menu']['#weight'] = -10;
+    $form['block_settings']['style'] = array(
+      '#type' => 'select',
+      '#title' => t('Menu style'),
+      '#options' => array(
+        'top_only' => t('Top level only'),
+        'dropdown' => t('Dropdown menu'),
+      ),
+      '#default_value' => empty($config['style']) ? 'top_only' : $config['style'],
+      '#weight' => -5,
+    );
+  
+    $form['block_settings']['depth'] = array(
+      '#type' => 'select',
+      '#title' => t('Maximum depth'),
+      '#default_value' => !empty($config['depth']) ? $config['depth'] : 0,
+      '#weight' => -1,
+      '#options' => array(
+        '1' => '1',
+        '2' => '2',
+        '3' => '3',
+        '4' => '4',
+        '5' => '5',
+        '6' => '6',
+        '7' => '7',
+        '8' => '8',
+        '9' => '9',
+        '0' => t('Unlimited'),
+      ),
+      '#description' => t('The maximum depth of the menu tree from the starting level (if available).'),
+      '#states' => array(
+        'invisible' => array(
+          'select[name="block_settings[style]"]' => array('value' => 'top_only'),
+        ),
+      ),
+    );
+  }
+}

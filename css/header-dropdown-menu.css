@@ -1,0 +1,44 @@
+.l-header .header-dropdown-menu .menu > li {
+  font-size: 1em;
+}
+
+.l-header .header-menu .header-dropdown-menu a {
+  display: block;
+  padding: 1rem 1.25rem;
+}
+
+@media (min-width: 34em) {
+  /* Specific selector to avoid contextual links */
+  .l-header .header-menu .header-dropdown-menu a {
+    padding: 1rem 1.25rem;
+  }
+
+  .l-header .header-dropdown-menu .menu > li {
+    font-size: 1em;
+  }
+}
+
+@media (min-width: 48em) {
+  .l-header .header-menu .header-dropdown-menu a {
+    /* Attempt at lining up baseline of site name and header menu */
+    padding-top: 1.9375rem;
+    padding-bottom: 1.0625rem;
+    line-height: 1.25rem;
+  }
+
+  .header-dropdown-menu .menu-dropdown a span.sub-arrow {
+    margin-top: 0.3em;
+  }
+}
+
+@media (min-width: 62em) {
+  .l-header .header-dropdown-menu .menu > li {
+    font-size: 1em;
+  }
+  .l-header .header-menu .header-dropdown-menu a {
+    /* Attempt at lining up baseline of site name and header menu */
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    line-height: 1.25rem;
+  }
+}
